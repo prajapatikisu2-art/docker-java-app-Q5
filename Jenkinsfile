@@ -47,24 +47,25 @@ pipeline {
                 }
             }
         }
+
+        stage('Deploy to Server') {
+            steps {
+
+                bat '"%DOCKER_PATH%" pull krishnaa20/docker-java-app-q5:%BUILD_NUMBER%'
+
+                bat '"%DOCKER_PATH%" stop myapp'
+
+                bat '"%DOCKER_PATH%" rm myapp'
+
+                bat '"%DOCKER_PATH%" run -d -p 8082:8080 --name myapp krishnaa20/docker-java-app-q5:%BUILD_NUMBER%'
+            }
+        }
+
     }
-
-stage('Deploy to Server') {
-    steps {
-
-        bat '"%DOCKER_PATH%" pull %DOCKERHUB_USER%/%IMAGE_NAME%:%BUILD_NUMBER%'
-
-        bat '"%DOCKER_PATH%" stop myapp'
-
-        bat '"%DOCKER_PATH%" rm myapp'
-
-        bat '"%DOCKER_PATH%" run -d -p 8082:8080 --name myapp %DOCKERHUB_USER%/%IMAGE_NAME%:%BUILD_NUMBER%'
-    }
-}
 
     post {
         success {
-            echo 'Build, Docker Image Creation and DockerHub Push Successful!'
+            echo 'Build, Docker Image Creation, DockerHub Push and Deployment Successful!'
         }
 
         failure {
