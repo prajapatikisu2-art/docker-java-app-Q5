@@ -22,7 +22,7 @@ pipeline {
 
         stage('Build Docker Image') {
             steps {
-                bat 'docker build -t docker-java-app-q5:%BUILD_NUMBER% .'
+                bat '"C:\\Users\\Asus\\AppData\\Local\\Programs\\DockerDesktop\\resources\\bin\\docker.exe" build -t docker-java-app-q5:%BUILD_NUMBER% .'
             }
         }
     }
