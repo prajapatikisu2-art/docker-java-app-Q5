@@ -1,4 +1,3 @@
-
 pipeline {
     agent any
 
@@ -13,6 +12,7 @@ pipeline {
     }
 
     stages {
+
         stage('Checkout') {
             steps {
                 checkout scm
@@ -38,7 +38,8 @@ pipeline {
                     usernameVariable: 'DOCKERHUB_USER',
                     passwordVariable: 'DOCKERHUB_PASS'
                 )]) {
-                    bat 'echo %DOCKERHUB_PASS% | "%DOCKER_PATH%" login -u "%DOCKERHUB_USER%" --password-stdin'
+
+                    bat '"%DOCKER_PATH%" login -u "%DOCKERHUB_USER%" -p "%DOCKERHUB_PASS%"'
 
                     bat '"%DOCKER_PATH%" tag %IMAGE_NAME%:%BUILD_NUMBER% "%DOCKERHUB_USER%/%IMAGE_NAME%:%BUILD_NUMBER%"'
 
@@ -52,6 +53,7 @@ pipeline {
         success {
             echo 'Build, Docker Image Creation and DockerHub Push Successful!'
         }
+
         failure {
             echo 'Pipeline Failed! Check Console Output.'
         }
